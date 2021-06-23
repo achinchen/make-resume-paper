@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "@achinchen/eslint-config/javascript",
+    "next"
+  ],
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "react/prop-types": "off"
+  },
+  "root": true
+}
