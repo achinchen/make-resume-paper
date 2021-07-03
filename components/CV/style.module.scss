@@ -1,0 +1,91 @@
+.cv {
+  margin: 32px 24px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.8;
+
+  @media print {
+    line-height: 1.75;
+  }
+
+  @media screen and (min-width: 900px) {
+    max-width: 800px;
+    margin: 32px auto;
+  }
+}
+
+.instruction {
+  text-align: center;
+  
+  &Name {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  &Contact {
+    display: block;
+  }
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  margin: 24px 0;
+
+  @media screen and (min-width: 900px) {
+    flex-direction: row;
+  }
+
+  &Title {
+    font-size: 1.4rem;
+    line-height: 1.45;
+    flex: auto;
+    margin: 0;
+    text-transform: uppercase;
+
+    @media screen and (min-width:  900px) {
+      flex: 0 0 200px;
+      border-right: 1px solid;
+    }
+  }
+
+  &Content {
+    margin: 12px 8px 8px 8px;
+    padding: 0 0 8px 16px;
+    list-style: none;
+    border-left: 1px solid;
+
+    @media screen and (min-width:  900px) {
+      border-left: none;
+      margin: 0;
+      padding: 0 0 0 24px;
+    }
+
+    &Item {
+      white-space: pre-line;
+
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+
+      @media print {
+        &:not(:last-child) {
+          margin-bottom: 0;
+        }
+      }
+      
+      &Projects {
+        padding-left: 18px;
+      }
+    }
+  }
+}
+
+.copyright {
+  margin-top: 16px;
+  text-align: center;
+
+  @media print {
+    display: none;
+  }
+}

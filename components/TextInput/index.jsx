@@ -11,8 +11,8 @@ const TextInput = ({
   ...props
 }) => {
   const handleChange = (event) => {
-    console.log('E');
     onValueChange(event.target.value);
+    event.target.focus();
   };
 
   return (

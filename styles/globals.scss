@@ -6,6 +6,17 @@
   --light-background: #dddee0;
 }
 
+:global {
+  --md: 900px;
+}
+
+// #cv {
+//   @media screen and (min-width: 900px) {
+//     max-width: 800px;
+//     margin: 32px auto;
+//   }
+// }
+
 html, body {
   margin: 0;
   padding: 0;
@@ -16,7 +27,6 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  // margin: 32px 24px;
   background-color: var(--light);
   color: var(--dark);
   font-weight: 500;
@@ -26,11 +36,6 @@ body {
   @media print {
     line-height: 1.75;
   }
-
-  // @media screen and (min-width: 900px) {
-  //   max-width: 800px;
-  //   margin: 32px auto;
-  // }
 
   @media (prefers-color-scheme: dark) {
     background-color: var(--dark);

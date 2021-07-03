@@ -1,0 +1,15 @@
+.field {
+  position: relative;
+  height: 60px;
+  width: 100%;
+  border: 1px solid rgba(var(--gray), .2);
+  padding: 8px;
+  resize: vertical;
+  font-family: inherit;
+
+  
+  &:focus-visible {
+    outline:  rgba(var(--gray), .5) auto 1.6px;
+  }
+
+}
