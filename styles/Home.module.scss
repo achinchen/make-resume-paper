@@ -29,10 +29,25 @@
   text-align: left;
 }
 
-.download {
-  width: 200px;
-  height: min-content;
+.nav {
+  display: flex;
+}
+
+.label {
+  width: max-content;
   align-self: center;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.input {
+  visibility: hidden;
+  width: 0;
+}
+
+.link {
+  align-self: center;
+  margin-left: 16px;
 }
 
 .footer {

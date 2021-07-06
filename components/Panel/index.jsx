@@ -1,10 +1,24 @@
 import { useResume } from 'context';
 import promptDownload, { SUPPORTED_TYPES } from './utils';
 import styles from './style.module.scss';
+import { useState } from 'react';
+
+const TITLE = 'Download your resume 🥑';
+const ERROR_MESSAGE = 'Oops, something happened! 😔';
 
 const Panel = () => {
+  const [message, setMessage] = useState(TITLE);
   const { name, info, mainContent } = useResume();
+  const disabled = message !== TITLE;
   const payload = JSON.stringify({ name, info, mainContent });
+
+  const setGeneralError = (e) => {
+    window.localStorage.setItem('__resume_error', JSON.stringify(e));
+    setMessage(ERROR_MESSAGE);
+    setTimeout(() => {
+      setMessage(TITLE);
+    }, 5000);
+  };
 
   const onHtml = async () => {
     try {
@@ -20,7 +34,7 @@ const Panel = () => {
 
       await promptDownload(body, 'html');
     } catch (e) {
-      console.log(e);
+      setGeneralError(e);
     }
   };
 
@@ -32,21 +46,21 @@ const Panel = () => {
     try {
       await promptDownload(payload, 'json');
     } catch (e) {
-      console.log(e);
+      setGeneralError(e);
     }
   };
 
   return (
     <aside className={styles.panel}>
-      <div>Download your resume 🥑</div>
+      <div>{message}</div>
       <div>
-        <button className={styles.option} onClick={onPrint}>
+        <button className={styles.option} disabled={disabled} onClick={onPrint}>
           pdf
         </button>
-        <button className={styles.option} onClick={onHtml}>
+        <button className={styles.option} disabled={disabled} onClick={onHtml}>
           html
         </button>
-        <button className={styles.option} onClick={onJSON}>
+        <button className={styles.option} disabled={disabled} onClick={onJSON}>
           json
         </button>
       </div>
