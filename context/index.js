@@ -5,57 +5,18 @@ import {
   useReducer,
   useState
 } from 'react';
-import { clone } from 'utils/index';
 import PropTypes from 'prop-types';
-
-export const CACHE_KEY = '__resume_paper_cache';
-
-const PLACEHOLDER = {
-  title: '',
-  content: '',
-  period: ''
-};
-
-const getContentPlaceholder = () =>
-  clone({ title: '', content: [PLACEHOLDER] });
-
-const getSampleContent = () =>
-  clone([
-    {
-      title: 'experience',
-      content: [
-        {
-          title: 'Frontend Dev at Example Inc.',
-          period: 'May, 2019 - May, 2021',
-          content: `- Frontend performance and a11y enhancement:
-Implement core image component with lazyload and dynamic resize service, reducing server traffic, increasing performance, and optimizing page loading speed.
-- Vital features refactoring e.g. RecipeEditor, Dish ...etc.:
-Switch JavaScript to TypeScript, fix bug issues, and rewrite unit tests to ensure smooth critical using path.
-- Data tracking mechanism:
-Deal with third-party cookie privacy issue, migrating GTM Server-side tagging and connecting Facebook Conversion API.
-- Campaign API and Database design:
-Provide campaign information and api for product usage. (e.g. https://example.com)`
-        }
-      ]
-    },
-    {
-      title: 'education',
-      content: [
-        {
-          title: 'Bachelor in CS at ABC University',
-          period: '2012 - 2016',
-          content: 'President Award'
-        }
-      ]
-    }
-  ]);
+import {
+  CACHE_KEY,
+  PLACEHOLDER,
+  getSampleContent,
+  getContentPlaceholder
+} from './constants';
+import validation from './validation';
 
 const initialState = {
-  name: {
-    mandarin: '王小明',
-    english: 'Ming, Wang'
-  },
-  info: [['email', 'example@example.com']],
+  name: PLACEHOLDER.name,
+  info: [PLACEHOLDER.info],
   mainContent: getSampleContent(),
   updateName: () => {},
   updateInfoTitle: () => {},
@@ -69,7 +30,8 @@ const initialState = {
   updateMainTitle: () => {},
   updateMainItemTitle: () => {},
   updateMainItemContent: () => {},
-  updateMainItemPeriod: () => {}
+  updateMainItemPeriod: () => {},
+  setupResume: () => {}
 };
 
 export const ResumeContext = createContext(initialState);
@@ -100,7 +62,7 @@ const mainContentReducer = (state, { type, index, itemIndex, payload }) => {
     case 'ADD':
       return [...state, getContentPlaceholder()];
     case 'ADD_ITEM':
-      state[index].content.push({ ...PLACEHOLDER });
+      state[index].content.push({ ...PLACEHOLDER.mainContent.content });
       return [...state];
     case 'UPDATE_TITLE':
       state[index].title = payload;
@@ -197,14 +159,20 @@ export const ResumeProvider = ({ children }) => {
   const deleteMainContentItem = (index, itemIndex) =>
     dispatchContent({ type: 'DELETE_ITEM', index, itemIndex });
 
-  useEffect(() => {
-    let resume = window.localStorage.getItem(CACHE_KEY);
-    if (resume) {
-      const { info, mainContent, name } = JSON.parse(resume);
+  const setupResume = (json) => {
+    const data = JSON.parse(json);
+    const isValid = validation(data);
+    if (isValid) {
+      const { name, info, mainContent } = data;
       setName(name);
       dispatchInfo({ type: 'SETUP', payload: info });
       dispatchContent({ type: 'SETUP', payload: mainContent });
     }
+  };
+
+  useEffect(() => {
+    let resume = window.localStorage.getItem(CACHE_KEY);
+    if (resume) setupResume(resume);
   }, []);
 
   return (
@@ -225,7 +193,8 @@ export const ResumeProvider = ({ children }) => {
         updateMainTitle,
         updateMainItemTitle,
         updateMainItemContent,
-        updateMainItemPeriod
+        updateMainItemPeriod,
+        setupResume
       }}
     >
       {children}
