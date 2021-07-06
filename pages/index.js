@@ -2,8 +2,20 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Editor from 'components/Editor';
 import styles from 'styles/Home.module.scss';
+import { useResume } from 'context';
 
 export default function Home() {
+  const { setupResume } = useResume();
+
+  const onImport = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      setupResume(evt.target.result);
+    };
+    reader.readAsText(file);
+  };
   return (
     <div className={styles.container}>
       <Head>
@@ -15,9 +27,20 @@ export default function Home() {
       </Head>
       <header className={styles.header}>
         <h1 className={styles.title}>Make Your Resume Paper!</h1>
-        <Link href="/cv" passHref>
-          <a className={styles.download}>Go and Download</a>
-        </Link>
+        <nav className={styles.nav}>
+          <label className={styles.label}>
+            Import json
+            <input
+              className={styles.input}
+              type="file"
+              accept=".json"
+              onInput={onImport}
+            />
+          </label>
+          <Link href="/cv" passHref>
+            <a className={styles.link}>Download</a>
+          </Link>
+        </nav>
       </header>
       <main className={styles.main}>
         <Editor />
